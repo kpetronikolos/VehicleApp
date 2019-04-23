@@ -1,11 +1,18 @@
 <div class='container-fluid'>
   <div class='row'>
     <div class='col-sm-3'>
-      <li [routerLinkActive]="['link-active']">
-        <a [routerLink]="['/home']">
-          <span class='glyphicon glyphicon-home'></span> Home
-        </a>
-      </li>
+      <ul class='nav navbar-nav'>
+        <li [routerLinkActive]="['link-active']">
+          <a [routerLink]="['/home']">
+            <span class='glyphicon glyphicon-home'></span> Home
+          </a>
+        </li>
+        <li [routerLinkActive]="['link-active']">
+          <a [routerLink]="['/vehicle/new']">
+            <span class='glyphicon glyphicon-home'></span> New vehicle
+          </a>
+        </li>
+      </ul>
     </div>
     <div class='col-sm-9 body-content'>
       <router-outlet></router-outlet>
