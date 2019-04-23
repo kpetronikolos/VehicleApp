@@ -8,12 +8,24 @@ import { MakeService } from '../../services/make.service';
 } )
 export class FormVehicleComponent implements OnInit {
 
-  public makes;
+  public makes: any[];
+  public models: any[];
+  public vehicle: any = {};
+  public selectedMake: any;
 
   constructor( private makeService: MakeService ) { }
 
   ngOnInit() {
-    this.makeService.getMakes().subscribe( makes => this.makes = makes );
+    this.makeService.getMakes().subscribe( ( makes: any[] ) => {
+      this.makes = makes
+    } );
+  }
+
+  public onMakeChanges(): void {
+    // console.log( "Vehicle", this.vehicle );
+    this.selectedMake = this.makes.find( m => m.id == this.vehicle.makeId );
+    this.models = this.selectedMake ? this.selectedMake.models : [];
+
   }
 
 }
