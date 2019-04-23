@@ -6,6 +6,8 @@ import { RouterModule } from '@angular/router';
 import { NavmenuComponent } from './components/navmenu/navmenu.component';
 import { HomeComponent } from './components/home/home.component';
 import { FormVehicleComponent } from './components/form-vehicle/form-vehicle.component';
+import { MakeService } from './services/make.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule( {
   declarations: [
@@ -15,6 +17,7 @@ import { FormVehicleComponent } from './components/form-vehicle/form-vehicle.com
     FormVehicleComponent
   ],
   imports: [
+    HttpClientModule,
     BrowserModule,
     RouterModule.forRoot( [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -23,7 +26,7 @@ import { FormVehicleComponent } from './components/form-vehicle/form-vehicle.com
       { path: '**', redirectTo: 'home' }
     ] )
   ],
-  providers: [],
+  providers: [MakeService],
   bootstrap: [AppComponent]
 } )
 export class AppModule { }
