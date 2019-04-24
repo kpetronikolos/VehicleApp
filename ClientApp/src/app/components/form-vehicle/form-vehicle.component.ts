@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MakeService } from '../../services/make.service';
+import { Make } from '../../models/Make';
+import { Model } from '../../models/Model';
 
 @Component( {
   selector: 'form-vehicle',
@@ -8,8 +10,8 @@ import { MakeService } from '../../services/make.service';
 } )
 export class FormVehicleComponent implements OnInit {
 
-  public makes: any[];
-  public models: any[];
+  public makes: Make[];
+  public models: Model[];
   public vehicle: any = {};
   public selectedMake: any;
 
