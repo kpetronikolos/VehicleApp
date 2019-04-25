@@ -9,6 +9,7 @@ import { HomeComponent } from './components/home/home.component';
 import { FormVehicleComponent } from './components/form-vehicle/form-vehicle.component';
 import { MakeService } from './services/make.service';
 import { HttpClientModule } from '@angular/common/http';
+import { FeatureService } from './services/feature.service';
 
 @NgModule( {
   declarations: [
@@ -28,7 +29,7 @@ import { HttpClientModule } from '@angular/common/http';
       { path: '**', redirectTo: 'home' }
     ] )
   ],
-  providers: [MakeService],
+  providers: [MakeService, FeatureService],
   bootstrap: [AppComponent]
 } )
 export class AppModule { }
