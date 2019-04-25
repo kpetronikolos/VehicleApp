@@ -1,6 +1,6 @@
 import { Model } from "./Model";
 
-export interface Make {
+export class Make {
   id: number;
   name: string;
 
