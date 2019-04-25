@@ -7,9 +7,8 @@ import { RouterModule } from '@angular/router';
 import { NavmenuComponent } from './components/navmenu/navmenu.component';
 import { HomeComponent } from './components/home/home.component';
 import { FormVehicleComponent } from './components/form-vehicle/form-vehicle.component';
-import { MakeService } from './services/make.service';
 import { HttpClientModule } from '@angular/common/http';
-import { FeatureService } from './services/feature.service';
+import { VehicleService } from './services/vehicle.service';
 
 @NgModule( {
   declarations: [
@@ -29,7 +28,7 @@ import { FeatureService } from './services/feature.service';
       { path: '**', redirectTo: 'home' }
     ] )
   ],
-  providers: [MakeService, FeatureService],
+  providers: [VehicleService],
   bootstrap: [AppComponent]
 } )
 export class AppModule { }
