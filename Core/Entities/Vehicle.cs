@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
-
-namespace Core.Entities
+﻿namespace Core.Entities
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.ComponentModel.DataAnnotations;
+    using System.Text;
+
     public class Vehicle
     {
         public int Id { get; set; }
@@ -26,5 +27,12 @@ namespace Core.Entities
         public string ContactPhone { get; set; }
 
         public DateTime LastUpdate { get; set; }
+
+        public ICollection<VehicleFeature> VehicleFeatures { get; set; }
+
+        public Vehicle()
+        {
+            VehicleFeatures = new Collection<VehicleFeature>();
+        }
     }
 }
