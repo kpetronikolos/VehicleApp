@@ -27,6 +27,19 @@
         [HttpPost]
         public async Task<IActionResult> CreateVehicle(VehicleResource vehicleResource)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Send a ModelId that does not exist.
+            /* var model = await _context.Models.FindAsync(vehicleResource.ModelId);
+            if (model == null)
+            {
+                ModelState.AddModelError("ModelId", "Invalid Model");
+                return BadRequest(ModelState);
+            } */
+
             var vehicle = _mapper.Map<VehicleResource, Vehicle>(vehicleResource);
 
             vehicle.LastUpdate = DateTime.Now;
