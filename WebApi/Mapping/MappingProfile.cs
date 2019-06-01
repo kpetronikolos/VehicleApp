@@ -24,7 +24,33 @@
                 .ForMember(v => v.ContactName, opt => opt.MapFrom(vr => vr.Contact.Name))
                 .ForMember(v => v.ContactEmail, opt => opt.MapFrom(vr => vr.Contact.Email))
                 .ForMember(v => v.ContactPhone, opt => opt.MapFrom(vr => vr.Contact.Phone))
-                .ForMember(v => v.VehicleFeatures, opt => opt.MapFrom(vr => vr.VehicleFeatures.Select(id => new VehicleFeature { FeatureId = id })));
+                //.ForMember(v => v.VehicleFeatures, opt => opt.MapFrom(vr => vr.VehicleFeatures.Select(id => new VehicleFeature { FeatureId = id })));
+                .ForMember(v => v.VehicleFeatures, opt => opt.Ignore())
+                .AfterMap((vr, v) =>
+                {
+                    // Remove unselected features
+                    var removedFeatures = new List<VehicleFeature>();
+                    foreach (var feature in v.VehicleFeatures)
+                    {
+                        if (!vr.VehicleFeatures.Contains(feature.FeatureId))
+                        {
+                            removedFeatures.Add(feature);
+                        }
+                    }
+                    foreach (var f in removedFeatures)
+                    {
+                        v.VehicleFeatures.Remove(f);
+                    }
+
+                    // Add new Features
+                    foreach (var id in vr.VehicleFeatures)
+                    {
+                        if (!v.VehicleFeatures.Any(f => f.FeatureId == id))
+                        {
+                            v.VehicleFeatures.Add(new VehicleFeature { FeatureId = id });
+                        }
+                    }
+                });
         }
     }
 }

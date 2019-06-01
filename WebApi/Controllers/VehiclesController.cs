@@ -9,6 +9,7 @@
     using Data.Context;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
     using WebApi.Resources;
 
     [Route("api/[controller]")]
@@ -45,6 +46,26 @@
             vehicle.LastUpdate = DateTime.Now;
 
             _context.Vehicles.Add(vehicle);
+            await _context.SaveChangesAsync();
+
+            var result = _mapper.Map<Vehicle, VehicleResource>(vehicle);
+
+            return Ok(result);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateVehicle(int id, VehicleResource vehicleResource)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var vehicle = await _context.Vehicles.Include(v => v.VehicleFeatures).SingleOrDefaultAsync(v => v.Id == id);
+
+            _mapper.Map<VehicleResource, Vehicle>(vehicleResource, vehicle);
+            vehicle.LastUpdate = DateTime.Now;
+
             await _context.SaveChangesAsync();
 
             var result = _mapper.Map<Vehicle, VehicleResource>(vehicle);
