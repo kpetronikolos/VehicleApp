@@ -29,27 +29,45 @@
                 .AfterMap((vr, v) =>
                 {
                     // Remove unselected features
-                    var removedFeatures = new List<VehicleFeature>();
-                    foreach (var feature in v.VehicleFeatures)
-                    {
-                        if (!vr.VehicleFeatures.Contains(feature.FeatureId))
-                        {
-                            removedFeatures.Add(feature);
-                        }
-                    }
+                    // Before Refactor
+                    //var removedFeatures = new List<VehicleFeature>();
+                    //foreach (var feature in v.VehicleFeatures)
+                    //{
+                    //    if (!vr.VehicleFeatures.Contains(feature.FeatureId))
+                    //    {
+                    //        removedFeatures.Add(feature);
+                    //    }
+                    //}
+
+                    // After Refactor
+                    var removedFeatures = v.VehicleFeatures.Where(feature => !vr.VehicleFeatures.Contains(feature.FeatureId)).ToList();
+
                     foreach (var f in removedFeatures)
                     {
                         v.VehicleFeatures.Remove(f);
                     }
 
                     // Add new Features
-                    foreach (var id in vr.VehicleFeatures)
+                    // Before Refactor
+                    //foreach (var id in vr.VehicleFeatures)
+                    //{
+                    //    if (!v.VehicleFeatures.Any(f => f.FeatureId == id))
+                    //    {
+                    //        v.VehicleFeatures.Add(new VehicleFeature { FeatureId = id });
+                    //    }
+                    //}
+
+                    // After Refactor
+                    var addedFeature = vr.VehicleFeatures
+                                        .Where(id => !v.VehicleFeatures.Any(f => f.FeatureId == id))
+                                        .Select(id => new VehicleFeature { FeatureId = id });
+
+                    foreach (var f in addedFeature)
                     {
-                        if (!v.VehicleFeatures.Any(f => f.FeatureId == id))
-                        {
-                            v.VehicleFeatures.Add(new VehicleFeature { FeatureId = id });
-                        }
+                        v.VehicleFeatures.Add(f);
                     }
+
+
                 });
         }
     }

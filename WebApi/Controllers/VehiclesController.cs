@@ -63,6 +63,11 @@
 
             var vehicle = await _context.Vehicles.Include(v => v.VehicleFeatures).SingleOrDefaultAsync(v => v.Id == id);
 
+            if (vehicle == null)
+            {
+                return NotFound();
+            }
+
             _mapper.Map<VehicleResource, Vehicle>(vehicleResource, vehicle);
             vehicle.LastUpdate = DateTime.Now;
 
