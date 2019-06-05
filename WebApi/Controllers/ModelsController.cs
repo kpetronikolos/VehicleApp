@@ -23,11 +23,11 @@
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<ModelResource>> GetModels()
+        public async Task<IEnumerable<KeyValuePairResource>> GetModels()
         {
             var models = await _context.Models.Include(m => m.Make).ToListAsync();
 
-            return _mapper.Map<List<Model>, List<ModelResource>>(models);
+            return _mapper.Map<List<Model>, List<KeyValuePairResource>>(models);
         }
     }
 }

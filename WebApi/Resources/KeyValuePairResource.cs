@@ -5,7 +5,7 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    public class FeatureResource
+    public class KeyValuePairResource
     {
         public int Id { get; set; }
 
