@@ -68,7 +68,14 @@
             _context.Vehicles.Add(vehicle);
             await _context.SaveChangesAsync();
 
-            var result = _mapper.Map<Vehicle, SaveVehicleResource>(vehicle);
+            vehicle = await _context.Vehicles
+                .Include(v => v.VehicleFeatures)
+                .ThenInclude(vf => vf.Feature)
+                .Include(v => v.Model)
+                .ThenInclude(m => m.Make)
+                .SingleOrDefaultAsync(v => v.Id == vehicle.Id);
+
+            var result = _mapper.Map<Vehicle, VehicleResource>(vehicle);
 
             return Ok(result);
         }
@@ -81,7 +88,12 @@
                 return BadRequest(ModelState);
             }
 
-            var vehicle = await _context.Vehicles.Include(v => v.VehicleFeatures).SingleOrDefaultAsync(v => v.Id == id);
+            var vehicle = await _context.Vehicles
+                .Include(v => v.VehicleFeatures)
+                .ThenInclude(vf => vf.Feature)
+                .Include(v => v.Model)
+                .ThenInclude(m => m.Make)
+                .SingleOrDefaultAsync(v => v.Id == id);
 
             if (vehicle == null)
             {
@@ -93,7 +105,14 @@
 
             await _context.SaveChangesAsync();
 
-            var result = _mapper.Map<Vehicle, SaveVehicleResource>(vehicle);
+            vehicle = await _context.Vehicles
+                .Include(v => v.VehicleFeatures)
+                .ThenInclude(vf => vf.Feature)
+                .Include(v => v.Model)
+                .ThenInclude(m => m.Make)
+                .SingleOrDefaultAsync(v => v.Id == id);
+
+            var result = _mapper.Map<Vehicle, VehicleResource>(vehicle);
 
             return Ok(result);
         }
