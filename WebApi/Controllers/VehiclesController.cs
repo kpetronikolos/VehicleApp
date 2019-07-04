@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
     using AutoMapper;
     using Core.Entities;
+    using Core.Interfaces;
     using Data.Context;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
@@ -18,22 +19,19 @@
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
+        private readonly IVehicleRepository _vehicleRepository;
 
-        public VehiclesController(IMapper mapper, DataContext context)
+        public VehiclesController(IMapper mapper, DataContext context, IVehicleRepository vehicleRepository)
         {
             _context = context;
             _mapper = mapper;
+            _vehicleRepository = vehicleRepository;
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetVehicle(int id)
         {
-            var vehicle = await _context.Vehicles
-                .Include(v => v.VehicleFeatures)
-                .ThenInclude(vf => vf.Feature)
-                .Include(v => v.Model)
-                .ThenInclude(m => m.Make)
-                .SingleOrDefaultAsync(v => v.Id == id);
+            var vehicle = await _vehicleRepository.GetVehicle(id);
 
             if (vehicle == null)
             {
@@ -68,12 +66,7 @@
             _context.Vehicles.Add(vehicle);
             await _context.SaveChangesAsync();
 
-            vehicle = await _context.Vehicles
-                .Include(v => v.VehicleFeatures)
-                .ThenInclude(vf => vf.Feature)
-                .Include(v => v.Model)
-                .ThenInclude(m => m.Make)
-                .SingleOrDefaultAsync(v => v.Id == vehicle.Id);
+            vehicle = await _vehicleRepository.GetVehicle(vehicle.Id);
 
             var result = _mapper.Map<Vehicle, VehicleResource>(vehicle);
 
@@ -88,12 +81,7 @@
                 return BadRequest(ModelState);
             }
 
-            var vehicle = await _context.Vehicles
-                .Include(v => v.VehicleFeatures)
-                .ThenInclude(vf => vf.Feature)
-                .Include(v => v.Model)
-                .ThenInclude(m => m.Make)
-                .SingleOrDefaultAsync(v => v.Id == id);
+            var vehicle = await _vehicleRepository.GetVehicle(id);
 
             if (vehicle == null)
             {
@@ -105,12 +93,7 @@
 
             await _context.SaveChangesAsync();
 
-            vehicle = await _context.Vehicles
-                .Include(v => v.VehicleFeatures)
-                .ThenInclude(vf => vf.Feature)
-                .Include(v => v.Model)
-                .ThenInclude(m => m.Make)
-                .SingleOrDefaultAsync(v => v.Id == id);
+            vehicle = await _vehicleRepository.GetVehicle(id);
 
             var result = _mapper.Map<Vehicle, VehicleResource>(vehicle);
 
