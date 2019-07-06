@@ -17,13 +17,13 @@
     [ApiController]
     public class VehiclesController : ControllerBase
     {
-        private readonly DataContext _context;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IVehicleRepository _vehicleRepository;
 
-        public VehiclesController(IMapper mapper, DataContext context, IVehicleRepository vehicleRepository)
+        public VehiclesController(IMapper mapper, IUnitOfWork unitOfWork, IVehicleRepository vehicleRepository)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
             _vehicleRepository = vehicleRepository;
         }
@@ -63,8 +63,8 @@
 
             vehicle.LastUpdate = DateTime.Now;
 
-            _context.Vehicles.Add(vehicle);
-            await _context.SaveChangesAsync();
+            _vehicleRepository.AddVehicle(vehicle);
+            await _unitOfWork.CompleteAsync();
 
             vehicle = await _vehicleRepository.GetVehicle(vehicle.Id);
 
@@ -91,7 +91,7 @@
             _mapper.Map<SaveVehicleResource, Vehicle>(vehicleResource, vehicle);
             vehicle.LastUpdate = DateTime.Now;
 
-            await _context.SaveChangesAsync();
+            await _unitOfWork.CompleteAsync();
 
             vehicle = await _vehicleRepository.GetVehicle(id);
 
@@ -103,15 +103,15 @@
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteVehicle(int id)
         {
-            var vehicle = await _context.Vehicles.FindAsync(id);
+            var vehicle = await _vehicleRepository.GetVehicle(id, includeRelated: false);
 
             if (vehicle == null)
             {
                 return NotFound();
             }
 
-            _context.Remove(vehicle);
-            await _context.SaveChangesAsync();
+            _vehicleRepository.RemoveVehicle(vehicle);
+            await _unitOfWork.CompleteAsync();
 
             return Ok(id);
         }
