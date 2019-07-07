@@ -13,7 +13,9 @@ export class FormVehicleComponent implements OnInit {
 
   public makes: Make[];
   public models: Model[];
-  public vehicle: any = {};
+  public vehicle: any = {
+    features: []
+  };
   public selectedMake: Make;
 
   public features: Feature[];
@@ -36,6 +38,15 @@ export class FormVehicleComponent implements OnInit {
     this.models = this.selectedMake ? this.selectedMake.models : [];
     if ( this.vehicle && this.vehicle.modelId ) {
       delete this.vehicle.modelId;
+    }
+  }
+
+  public onFeatureToggle( featureId, $event ): void {
+    if ( $event.target.checked ) {
+      this.vehicle.features.push( featureId );
+    } else {
+      var index = this.vehicle.features.indexOf( featureId );
+      this.vehicle.features.splice( index, 1 );
     }
   }
 
