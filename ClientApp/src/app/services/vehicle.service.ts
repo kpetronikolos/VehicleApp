@@ -18,4 +18,8 @@ export class VehicleService {
     return this.http.get<Feature[]>( 'https://localhost:5001/api/features' );
   }
 
+  public createVehicle( vehicle ): any {
+    return this.http.post( 'https://localhost:5001/api/vehicles', vehicle );
+  }
+
 }
