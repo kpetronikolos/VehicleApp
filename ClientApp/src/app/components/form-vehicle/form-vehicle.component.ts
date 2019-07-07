@@ -14,7 +14,8 @@ export class FormVehicleComponent implements OnInit {
   public makes: Make[];
   public models: Model[];
   public vehicle: any = {
-    features: []
+    features: [],
+    contact: {}
   };
   public selectedMake: Make;
 

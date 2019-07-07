@@ -33,7 +33,7 @@
            id="registered"
            value="true"
            [(ngModel)]="vehicle.isRegistered"
-           name="registered">Yes
+           name="isRegistered">Yes
   </label>
   <label for="notRegistered"
          class="radio-inline">
@@ -41,7 +41,7 @@
            id="notRegistered"
            value="false"
            [(ngModel)]="vehicle.isRegistered"
-           name="registered">No
+           name="isRegistered">No
   </label>
 
   <h2>Features</h2>
@@ -59,19 +59,25 @@
     <label for="contactName">Name</label>
     <input id="contactName"
            type="text"
-           class="form-control">
+           class="form-control"
+           [(ngModel)]="vehicle.contact.name"
+           name="contactName">
   </div>
   <div class="form-group">
     <label for="contactPhone">Phone</label>
     <input id="contactPhone"
            type="text"
-           class="form-control">
+           class="form-control"
+           [(ngModel)]="vehicle.contact.phone"
+           name="contactPhone">
   </div>
   <div class="form-group">
     <label for="contactEmail">Email</label>
     <input id="contactEmail"
            type="text"
-           class="form-control">
+           class="form-control"
+           [(ngModel)]="vehicle.contact.email"
+           name="contactEmail">
   </div>
   <button class="btn btn-primary">Save</button>
 </form>
