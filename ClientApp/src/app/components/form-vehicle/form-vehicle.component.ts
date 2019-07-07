@@ -34,7 +34,9 @@ export class FormVehicleComponent implements OnInit {
     // console.log( "Vehicle", this.vehicle );
     this.selectedMake = this.makes.find( m => m.id == this.vehicle.makeId );
     this.models = this.selectedMake ? this.selectedMake.models : [];
-
+    if ( this.vehicle && this.vehicle.modelId ) {
+      delete this.vehicle.modelId;
+    }
   }
 
 }
