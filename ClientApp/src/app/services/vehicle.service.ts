@@ -22,4 +22,8 @@ export class VehicleService {
     return this.http.post( 'https://localhost:5001/api/vehicles', vehicle );
   }
 
+  getVehicle( id ) {
+    return this.http.get( 'https://localhost:5001/api/vehicles/' + id );
+  }
+
 }

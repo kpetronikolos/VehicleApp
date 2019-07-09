@@ -24,6 +24,7 @@ import { VehicleService } from './services/vehicle.service';
     RouterModule.forRoot( [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'vehicle/new', component: FormVehicleComponent },
+      { path: 'vehicles/:id', component: FormVehicleComponent },
       { path: 'home', component: HomeComponent },
       { path: '**', redirectTo: 'home' }
     ] )

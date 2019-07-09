@@ -3,6 +3,7 @@ import { Make } from '../../models/Make';
 import { Model } from '../../models/Model';
 import { Feature } from '../../models/Feature';
 import { VehicleService } from '../../services/vehicle.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component( {
   selector: 'form-vehicle',
@@ -21,9 +22,21 @@ export class FormVehicleComponent implements OnInit {
 
   public features: Feature[];
 
-  constructor( private vehicleService: VehicleService ) { }
+  constructor( private route: ActivatedRoute, private router: Router, private vehicleService: VehicleService ) {
+    route.params.subscribe( p => {
+      this.vehicle.id = +p['id'];
+    } )
+  }
 
   ngOnInit() {
+    this.vehicleService.getVehicle( this.vehicle.id ).subscribe( v => {
+      this.vehicle = v;
+    }, err => {
+      if ( err.status == 404 ) {
+        this.router.navigate( ['/home'] );
+      }
+    } );
+
     this.vehicleService.getMakes().subscribe( ( makes: Make[] ) => {
       this.makes = makes
     } );
