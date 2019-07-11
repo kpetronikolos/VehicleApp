@@ -4,6 +4,7 @@ import { Model } from '../../models/Model';
 import { Feature } from '../../models/Feature';
 import { VehicleService } from '../../services/vehicle.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
 
 @Component( {
   selector: 'form-vehicle',
@@ -24,26 +25,29 @@ export class FormVehicleComponent implements OnInit {
 
   constructor( private route: ActivatedRoute, private router: Router, private vehicleService: VehicleService ) {
     route.params.subscribe( p => {
-      this.vehicle.id = +p['id'];
+      if ( p.id ) {
+        this.vehicle.id = +p['id'];
+      }
     } )
   }
 
   ngOnInit() {
-    this.vehicleService.getVehicle( this.vehicle.id ).subscribe( v => {
-      this.vehicle = v;
+    forkJoin( [
+      this.vehicleService.getMakes(),
+      this.vehicleService.getFeatures(),
+      this.vehicle.id ? this.vehicleService.getVehicle( this.vehicle.id ) : Promise.resolve( 0 )
+    ] ).subscribe( data => {
+      this.makes = data[0];
+      this.features = data[1];
+
+      if ( this.vehicle.id ) {
+        this.vehicle = data[2];
+      }
     }, err => {
       if ( err.status == 404 ) {
         this.router.navigate( ['/home'] );
       }
     } );
-
-    this.vehicleService.getMakes().subscribe( ( makes: Make[] ) => {
-      this.makes = makes
-    } );
-
-    this.vehicleService.getFeatures().subscribe( ( features: Feature[] ) => {
-      this.features = features;
-    } )
   }
 
   public onMakeChanges(): void {
