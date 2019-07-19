@@ -4,6 +4,7 @@ import { map } from 'rxjs/operators';
 import { Observable } from "rxjs";
 import { Make } from "../models/Make";
 import { Feature } from "../models/Feature";
+import { VehicleResource } from "../resources/VehileResource";
 
 @Injectable()
 export class VehicleService {
@@ -22,8 +23,8 @@ export class VehicleService {
     return this.http.post( 'https://localhost:5001/api/vehicles', vehicle );
   }
 
-  getVehicle( id ) {
-    return this.http.get( 'https://localhost:5001/api/vehicles/' + id );
+  public getVehicle( id ): Observable<VehicleResource[]> {
+    return this.http.get<VehicleResource[]>( 'https://localhost:5001/api/vehicles/' + id );
   }
 
 }

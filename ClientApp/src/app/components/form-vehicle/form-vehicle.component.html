@@ -36,7 +36,7 @@
          class="radio-inline">
     <input type="radio"
            id="registered"
-           value="true"
+           [value]="true"
            [(ngModel)]="vehicle.isRegistered"
            name="isRegistered">Yes
   </label>
@@ -44,7 +44,7 @@
          class="radio-inline">
     <input type="radio"
            id="notRegistered"
-           value="false"
+           [value]="false"
            [(ngModel)]="vehicle.isRegistered"
            name="isRegistered">No
   </label>
@@ -55,7 +55,8 @@
     <label for="feature{{f.id}}">
       <input type="checkbox"
              id="feature{{f.id}}"
-             (change)="onFeatureToggle(f.id, $event)">{{f.name}}
+             (change)="onFeatureToggle(f.id, $event)"
+             [checked]="vehicle.vehicleFeatures.includes(f.id)">{{f.name}}
     </label>
   </div>
 
