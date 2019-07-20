@@ -86,7 +86,12 @@ export class FormVehicleComponent implements OnInit {
   }
 
   submit() {
-    this.vehicleService.createVehicle( this.vehicle ).subscribe( x => console.log( x ) );
+    if ( this.vehicle.id ) {
+      this.vehicleService.updateVehicle( this.vehicle ).subscribe( x => console.log( x ) );
+    } else {
+      this.vehicleService.createVehicle( this.vehicle ).subscribe( x => console.log( x ) );
+    }
+
   }
 
   private setVehicle( vehicleResource: VehicleResource ): void {
