@@ -32,4 +32,8 @@ export class VehicleService {
     return this.http.put( 'https://localhost:5001/api/vehicles/' + vehicle.id, vehicle );
   }
 
+  public delete( id ): any {
+    return this.http.delete( 'https://localhost:5001/api/vehicles/' + id );
+  }
+
 }
