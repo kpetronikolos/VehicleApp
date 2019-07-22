@@ -91,7 +91,18 @@ export class FormVehicleComponent implements OnInit {
 
   submit() {
     if ( this.vehicle.id ) {
-      this.vehicleService.updateVehicle( this.vehicle ).subscribe( x => console.log( x ) );
+      this.vehicleService.updateVehicle( this.vehicle )
+        .subscribe(
+          x => {
+            console.log( x );
+            this.toastyService.success( {
+              title: 'Success',
+              msg: 'Vehicle has successfully updated',
+              theme: 'bootstrap',
+              showClose: true,
+              timeout: 5000
+            } );
+          } );
     } else {
       this.vehicleService.createVehicle( this.vehicle )
         .subscribe(
@@ -113,6 +124,13 @@ export class FormVehicleComponent implements OnInit {
     if ( confirm( "Are you sure?" ) ) {
       this.vehicleService.delete( this.vehicle.id ).subscribe( x => {
         this.router.navigate( ['/home'] );
+        this.toastyService.success( {
+          title: 'Success',
+          msg: 'Vehicle has deleted successfully',
+          theme: 'bootstrap',
+          showClose: true,
+          timeout: 5000
+        } );
       } )
     }
   }
