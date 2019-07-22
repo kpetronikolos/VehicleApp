@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ToastaModule } from 'ngx-toasta';
 
 import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
@@ -21,6 +22,7 @@ import { VehicleService } from './services/vehicle.service';
     HttpClientModule,
     BrowserModule,
     FormsModule,
+    ToastaModule.forRoot(),
     RouterModule.forRoot( [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'vehicle/new', component: FormVehicleComponent },

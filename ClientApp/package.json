@@ -24,6 +24,8 @@
     "core-js": "^2.5.4",
     "font-awesome": "^4.7.0",
     "jquery": "^3.4.0",
+    "ng2-toasty": "^4.0.3",
+    "ngx-toasta": "^1.0.3",
     "rxjs": "6.0.0",
     "underscore": "^1.9.1",
     "zone.js": "~0.8.26"

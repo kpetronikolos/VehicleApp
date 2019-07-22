@@ -9,6 +9,7 @@ import { forkJoin } from 'rxjs';
 import { SaveVehicle } from '../../dtos/SaveVehicle';
 import { VehicleFeature } from '../../models/VehicleFeature';
 import { VehicleResource } from '../../resources/VehileResource';
+import { ToastaService } from 'ngx-toasta';
 
 @Component( {
   selector: 'form-vehicle',
@@ -35,7 +36,10 @@ export class FormVehicleComponent implements OnInit {
 
   public features: Feature[];
 
-  constructor( private route: ActivatedRoute, private router: Router, private vehicleService: VehicleService ) {
+  constructor( private route: ActivatedRoute,
+    private router: Router,
+    private vehicleService: VehicleService,
+    private toastyService: ToastaService ) {
     route.params.subscribe( p => {
       if ( p.id ) {
         this.vehicle.id = +p['id'];
@@ -89,7 +93,18 @@ export class FormVehicleComponent implements OnInit {
     if ( this.vehicle.id ) {
       this.vehicleService.updateVehicle( this.vehicle ).subscribe( x => console.log( x ) );
     } else {
-      this.vehicleService.createVehicle( this.vehicle ).subscribe( x => console.log( x ) );
+      this.vehicleService.createVehicle( this.vehicle )
+        .subscribe(
+          x => console.log( x ),
+          err => {
+            this.toastyService.error( {
+              title: 'Error',
+              msg: 'An unexpected error happened',
+              theme: 'bootstrap',
+              showClose: true,
+              timeout: 5000
+            } );
+          } );
     }
 
   }
