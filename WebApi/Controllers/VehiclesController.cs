@@ -116,5 +116,13 @@
             return Ok(id);
         }
 
+        [HttpGet]
+        public async Task<IEnumerable<VehicleResource>> GetVehicles()
+        {
+            var vehicles = await _vehicleRepository.GetVehicles();
+
+            return _mapper.Map<IEnumerable<Vehicle>, IEnumerable<VehicleResource>>(vehicles);
+        }
+
     }
 }
