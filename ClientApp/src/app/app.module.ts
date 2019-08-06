@@ -10,13 +10,15 @@ import { HomeComponent } from './components/home/home.component';
 import { FormVehicleComponent } from './components/form-vehicle/form-vehicle.component';
 import { HttpClientModule } from '@angular/common/http';
 import { VehicleService } from './services/vehicle.service';
+import { VehicleListComponent } from './components/vehicle-list/vehicle-list.component';
 
 @NgModule( {
   declarations: [
     AppComponent,
     NavmenuComponent,
     HomeComponent,
-    FormVehicleComponent
+    FormVehicleComponent,
+    VehicleListComponent
   ],
   imports: [
     HttpClientModule,
@@ -24,7 +26,8 @@ import { VehicleService } from './services/vehicle.service';
     FormsModule,
     ToastaModule.forRoot(),
     RouterModule.forRoot( [
-      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: '', redirectTo: 'vehicles', pathMatch: 'full' },
+      { path: 'vehicles', component: VehicleListComponent },
       { path: 'vehicle/new', component: FormVehicleComponent },
       { path: 'vehicles/:id', component: FormVehicleComponent },
       { path: 'home', component: HomeComponent },

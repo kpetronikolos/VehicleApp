@@ -36,4 +36,8 @@ export class VehicleService {
     return this.http.delete( 'https://localhost:5001/api/vehicles/' + id );
   }
 
+  public getVehicles(): Observable<VehicleResource[]> {
+    return this.http.get<VehicleResource[]>( 'https://localhost:5001/api/vehicles/' );
+  }
+
 }
