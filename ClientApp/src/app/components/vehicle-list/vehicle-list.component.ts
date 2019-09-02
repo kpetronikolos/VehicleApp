@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { VehicleResource } from '../../resources/VehileResource';
 import { VehicleService } from '../../services/vehicle.service';
 import { Make } from '../../models/Make';
+import { Filter } from '../../dtos/Filter';
 
 @Component( {
   selector: 'app-vehicle-list',
@@ -10,11 +11,16 @@ import { Make } from '../../models/Make';
 } )
 export class VehicleListComponent implements OnInit {
 
+  // Client side filtering
+  // public allVehicles: VehicleResource[];
+
   public vehicles: VehicleResource[];
-  public allVehicles: VehicleResource[];
   public makes: Make[];
 
-  public filter: any = {};
+  public filter: Filter = {
+    makeId: null,
+    modelId: null
+  };
 
   constructor( private vehicleService: VehicleService ) { }
 
@@ -24,20 +30,41 @@ export class VehicleListComponent implements OnInit {
         this.makes = makes
       } );
 
-    this.vehicleService.getVehicles()
-      .subscribe( data => {
-        this.vehicles = this.allVehicles = data;
-      } )
+    this.populateVehicles();
   }
 
   public onFilterChange(): void {
-    var filteredVehicles = this.allVehicles;
+
+    // Server side filtering
+    this.populateVehicles();
+
+    // Client side filtering
+    /* var filteredVehicles = this.allVehicles;
 
     if ( this.filter.makeId ) {
       filteredVehicles = filteredVehicles.filter( v => v.make.id == this.filter.makeId )
     }
 
-    this.vehicles = filteredVehicles;
+    this.vehicles = filteredVehicles; */
+  }
+
+  public resetFilter(): void {
+    this.filter = {
+      makeId: null,
+      modelId: null
+    };
+
+    this.populateVehicles();
+  }
+
+  private populateVehicles(): void {
+    this.vehicleService.getVehicles( this.filter )
+      .subscribe( data => {
+        this.vehicles = data;
+
+        // Client side filtering
+        // this.vehicles = this.allVehicles = data;
+      } )
   }
 
 }

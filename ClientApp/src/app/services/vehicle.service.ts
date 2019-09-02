@@ -1,11 +1,12 @@
 import { Injectable } from "@angular/core";
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Observable } from "rxjs";
 import { Make } from "../models/Make";
 import { Feature } from "../models/Feature";
 import { VehicleResource } from "../resources/VehileResource";
 import { SaveVehicle } from "../dtos/SaveVehicle";
+import { Filter } from "../dtos/Filter";
 
 @Injectable()
 export class VehicleService {
@@ -36,8 +37,30 @@ export class VehicleService {
     return this.http.delete( 'https://localhost:5001/api/vehicles/' + id );
   }
 
-  public getVehicles(): Observable<VehicleResource[]> {
-    return this.http.get<VehicleResource[]>( 'https://localhost:5001/api/vehicles/' );
+  public getVehicles( filter: Filter ): Observable<VehicleResource[]> {
+    // First Way: Url string
+    return this.http.get<VehicleResource[]>( 'https://localhost:5001/api/vehicles' + '?' + this.toQueryString( filter ) );
+
+    // Second way: Params
+    // var filterParams = filter.makeId || filter.modelId ? new HttpParams()
+    //   .set( 'makeId', filter.makeId.toString() )
+    //   .set( 'modelId', filter.modelId ? filter.modelId.toString() : "" ) : null;
+
+    // return this.http.get<VehicleResource[]>( 'https://localhost:5001/api/vehicles', { params: filterParams } );
+  }
+
+  private toQueryString( obj: Filter ) {
+    var parts = [];
+
+    for ( var property in obj ) {
+      var value = obj[property];
+
+      if ( value != null && value != undefined ) {
+        parts.push( encodeURIComponent( property ) + '=' + encodeURIComponent( value ) )
+      }
+    }
+
+    return parts.join( '&' );
   }
 
 }

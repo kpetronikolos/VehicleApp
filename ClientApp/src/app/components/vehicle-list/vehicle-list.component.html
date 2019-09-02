@@ -13,7 +13,14 @@
     <option *ngFor="let m of makes"
             value="{{ m.id }}">{{ m.name }}</option>
   </select>
+
 </div>
+
+<button class="btn btn-primary"
+        (click)="resetFilter()">Reset</button>
+<br><br><br>
+
+
 <table class="table">
   <thead>
     <tr>
