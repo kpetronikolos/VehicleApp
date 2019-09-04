@@ -19,7 +19,9 @@ export class VehicleListComponent implements OnInit {
 
   public filter: Filter = {
     makeId: null,
-    modelId: null
+    modelId: null,
+    sortBy: null,
+    isSortAscending: true
   };
 
   constructor( private vehicleService: VehicleService ) { }
@@ -51,8 +53,21 @@ export class VehicleListComponent implements OnInit {
   public resetFilter(): void {
     this.filter = {
       makeId: null,
-      modelId: null
+      modelId: null,
+      sortBy: null,
+      isSortAscending: true
     };
+
+    this.populateVehicles();
+  }
+
+  public sortBy( column: string ) {
+    if ( column === this.filter.sortBy ) {
+      this.filter.isSortAscending = false
+    } else {
+      this.filter.sortBy = column;
+      this.filter.isSortAscending = true;
+    }
 
     this.populateVehicles();
   }
