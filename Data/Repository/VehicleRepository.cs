@@ -9,6 +9,7 @@
     using System.Text;
     using System.Threading.Tasks;
     using System.Linq;
+    using System.Linq.Expressions;
 
     public class VehicleRepository : IVehicleRepository
     {
@@ -62,7 +63,21 @@
                 query = query.Where(v => v.ModelId == filter.ModelId);
             }
 
-            if (filter.SortBy == "make")
+            var columnsMap = new Dictionary<string, Expression<Func<Vehicle, object>>>()
+            {
+                ["make"] = v => v.Model.Make.Name,
+                ["model"] = v => v.Model.Name,
+                ["contactName"] = v => v.ContactName,
+                ["id"] = v => v.Id
+            };
+
+            if (!String.IsNullOrEmpty(filter.SortBy))
+            {
+                query = filter.IsSortAscending ? query.OrderBy(columnsMap[filter.SortBy]) : query.OrderByDescending(columnsMap[filter.SortBy]);
+
+            }
+
+            /*if (filter.SortBy == "make")
             {
                 query = filter.IsSortAscending ? query.OrderBy(v => v.Model.Make.Name) : query.OrderByDescending(v => v.Model.Make.Name);
             }
@@ -77,9 +92,9 @@
             if (filter.SortBy == "id")
             {
                 query = filter.IsSortAscending ? query.OrderBy(v => v.Id) : query.OrderByDescending(v => v.Id);
-            }
+            }*/
 
             return await query.ToListAsync();
-        }
+        }       
     }
 }
