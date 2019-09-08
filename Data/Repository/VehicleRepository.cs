@@ -63,6 +63,7 @@
                 query = query.Where(v => v.ModelId == filter.ModelId);
             }
 
+            // Sorting with Dictionary.
             var columnsMap = new Dictionary<string, Expression<Func<Vehicle, object>>>()
             {
                 ["make"] = v => v.Model.Make.Name,
@@ -73,10 +74,10 @@
 
             if (!String.IsNullOrEmpty(filter.SortBy))
             {
-                query = filter.IsSortAscending ? query.OrderBy(columnsMap[filter.SortBy]) : query.OrderByDescending(columnsMap[filter.SortBy]);
-
+                query = ApplyOrdering(filter, query, columnsMap);
             }
 
+            // Sorting without Dictionary.
             /*if (filter.SortBy == "make")
             {
                 query = filter.IsSortAscending ? query.OrderBy(v => v.Model.Make.Name) : query.OrderByDescending(v => v.Model.Make.Name);
@@ -95,6 +96,11 @@
             }*/
 
             return await query.ToListAsync();
-        }       
+        }
+
+        private IQueryable<Vehicle> ApplyOrdering(Filter filter, IQueryable<Vehicle> query, Dictionary<string, Expression<Func<Vehicle, object>>> columnsMap)
+        {
+            return filter.IsSortAscending ? query.OrderBy(columnsMap[filter.SortBy]) : query.OrderByDescending(columnsMap[filter.SortBy]);
+        }
     }
 }
