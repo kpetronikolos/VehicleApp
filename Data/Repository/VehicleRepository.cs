@@ -10,6 +10,7 @@
     using System.Threading.Tasks;
     using System.Linq;
     using System.Linq.Expressions;
+    using Core.Extensions;
 
     public class VehicleRepository : IVehicleRepository
     {
@@ -72,10 +73,8 @@
                 ["id"] = v => v.Id
             };
 
-            if (!String.IsNullOrEmpty(filter.SortBy))
-            {
-                query = ApplyOrdering(filter, query, columnsMap);
-            }
+            query = IQueryableExtensions.ApplyOrdering(filter, query, columnsMap);
+            
 
             // Sorting without Dictionary.
             /*if (filter.SortBy == "make")
@@ -98,9 +97,9 @@
             return await query.ToListAsync();
         }
 
-        private IQueryable<Vehicle> ApplyOrdering(Filter filter, IQueryable<Vehicle> query, Dictionary<string, Expression<Func<Vehicle, object>>> columnsMap)
+        /*private IQueryable<Vehicle> ApplyOrdering(Filter filter, IQueryable<Vehicle> query, Dictionary<string, Expression<Func<Vehicle, object>>> columnsMap)
         {
             return filter.IsSortAscending ? query.OrderBy(columnsMap[filter.SortBy]) : query.OrderByDescending(columnsMap[filter.SortBy]);
-        }
+        }*/
     }
 }
