@@ -27,7 +27,7 @@
     "ng2-toasty": "^4.0.3",
     "ngx-toasta": "^1.0.3",
     "rxjs": "6.0.0",
-    "underscore": "^1.9.1",
+    "underscore": "^1.12.1",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {
